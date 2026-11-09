@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>橘猫鼠标跟随 · 独立预览</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+        color: #242424;
+        background: #fff;
+        --muted: #767676;
+        --line: #e7e7e7;
+        --button: #f3f3f3;
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        color: #f2f2f2;
+        background: #242424;
+        --muted: #aaa;
+        --line: #454545;
+        --button: #353535;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 280px; }
+      header, footer { max-width: 960px; margin: auto; padding: 24px; }
+      header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+      h1 { margin: 0; font-size: 15px; font-weight: 600; }
+      .themes { display: flex; gap: 6px; }
+      button {
+        padding: 7px 12px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      button[aria-pressed="true"] { background: var(--button); }
+      button:focus-visible { outline: 2px solid #d38a39; outline-offset: 3px; }
+      #stage {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 420px;
+        height: min(68svh, 680px);
+        border-block: 1px solid var(--line);
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      #character {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        flex: none;
+        pointer-events: none;
+      }
+      #fallback, #sprite { position: absolute; inset: 0; width: 100%; height: 100%; }
+      #fallback { display: block; object-fit: contain; }
+      #sprite { background-repeat: no-repeat; }
+      [hidden] { display: none !important; }
+      footer { text-align: center; }
+      #status { margin: 0; font-size: 13px; }
+      .hint { margin: 10px 0 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+      @media (max-width: 500px) {
+        header, footer { padding: 20px; }
+        #stage { min-height: 360px; height: 62svh; }
+      }
+    </style>
+    <script defer src="./implementation.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>橘猫鼠标跟随</h1>
+      <div class="themes" role="group" aria-label="预览背景">
+        <button type="button" data-theme="light" aria-pressed="true">白色</button>
+        <button type="button" data-theme="dark" aria-pressed="false">深灰</button>
+      </div>
+    </header>
+    <main id="stage" aria-label="橘猫交互预览区域">
+      <div id="character" role="img" aria-label="坐着的长毛橘猫">
+        <img id="fallback" src="../final/poster.png" alt="" draggable="false" />
+        <div id="sprite" hidden aria-hidden="true"></div>
+      </div>
+    </main>
+    <footer>
+      <p id="status" role="status" aria-live="polite">动画素材准备中</p>
+      <p class="hint">在画面内移动鼠标，或在触屏上按住拖动。离开后回到初始姿态。</p>
+    </footer>
+  </body>
+</html>
